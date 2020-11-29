@@ -6,7 +6,7 @@ const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const cors = require('cors');
-
+import 'regenerator-runtime/runtime';
 const passport = require('passport');
 require('./config/passport');
 const router = express.Router();
@@ -15,7 +15,7 @@ const authController = require('./controllers/auth.controller');
 const indexRouter = require('./routes/index');
 
 const app = express();
-
+console.log('process.env.MONGO_URL', process.env.MONGO_URL);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

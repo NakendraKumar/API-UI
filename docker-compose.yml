@@ -1,0 +1,72 @@
+version: '3.5'
+
+services:
+  ui-sim:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    stdin_open: true
+    volumes:
+      - ./ui/src:/app/src:delegated
+      - ./ui/public:/app/public:delegated
+    depends_on:
+      - api-sim
+    ports:
+      - 3000:3000
+    networks:
+      - api-ui
+    logging:
+      options:
+        max-size: 10m
+
+  api-sim:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    command: ['npm', 'run', 'dev']
+    restart: on-failure
+    environment:
+      MONGO_URL: 'mongodb://mongo-sim/simplilearnApi'
+    volumes:
+      - ./api/build:/app/build:delegated
+      - ./api/package.json:/app/package.json:delegated
+    depends_on:
+      - api-watch-sim
+      - mongo-sim
+    ports:
+      - 4000:4000
+    networks:
+      - api-ui
+
+  api-watch-sim:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    command: ['npm', 'run', 'watch']
+    volumes:
+      - ./api/src:/app/src:delegated
+      - ./api/build:/app/build:delegated
+      - ./api/.babelrc:/app/.babelrc:delegated
+    logging:
+      options:
+        max-size: 10m
+
+  mongo-sim:
+    image: mongo:latest
+    container_name: mongo-sim
+    volumes:
+      - mongo-sim:/data/db
+    logging:
+      options:
+        max-size: 10m
+    networks:
+      - api-ui
+    ports:
+      - 27017:27017
+
+volumes:
+  mongo-sim:
+  chaindata:
+
+networks:
+  api-ui:

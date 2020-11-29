@@ -3,9 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node ./build/index.js",
+    "dev": "nodemon --inspect ./build/index.js",
+    "build": "babel src -d build --copy-files",
+    "watch": "babel src -d build --watch --copy-files"
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/runtime": "^7.12.5",
+    "@babel/runtime-corejs3": "^7.12.5",
+    "babel-watch": "^7.0.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
@@ -24,8 +31,15 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "pug": "2.0.0-beta11",
+    "regenerator-runtime": "^0.13.7",
     "validator": "^13.1.17",
     "winston": "^3.3.3",
     "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "babel-plugin-transform-runtime": "^6.23.0"
   }
 }

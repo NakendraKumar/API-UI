@@ -2,7 +2,7 @@ module.exports = {
   env: 'development',
   port: '4000',
   mongoose: {
-    url: (MONGODB_URL = 'mongodb://127.0.0.1:27017/simplilearnApi'),
+    url: process.env.MONGO_URL,
     options: {
       useCreateIndex: true,
       useNewUrlParser: true,
